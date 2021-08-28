@@ -429,10 +429,6 @@ class Builder
      */
     public function withClaim($name, $value)
     {
-        if (in_array($name, RegisteredClaims::ALL, true)) {
-            trigger_error('The use of the method "withClaim" is deprecated for registered claims. Please use dedicated method instead.', E_USER_DEPRECATED);
-        }
-
         return $this->forwardCallToCorrectClaimMethod($name, $value);
     }
 
@@ -520,10 +516,6 @@ class Builder
      */
     public function getToken(Signer $signer = null, Key $key = null)
     {
-        if ($signer === null || $key === null) {
-            trigger_error('Not specifying the signer and key to Builder#getToken() is deprecated. Please move the arguments from Builder#sign() to Builder#getToken().', E_USER_DEPRECATED);
-        }
-
         $signer = $signer ?: $this->signer;
         $key = $key ?: $this->key;
 
