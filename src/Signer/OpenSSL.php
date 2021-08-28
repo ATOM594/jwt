@@ -26,7 +26,7 @@ abstract class OpenSSL extends BaseSigner
 
             return $signature;
         } finally {
-            openssl_free_key($privateKey);
+            is_resource($privateKey) && openssl_free_key($privateKey);
         }
     }
 
@@ -54,7 +54,7 @@ abstract class OpenSSL extends BaseSigner
     {
         $publicKey = $this->getPublicKey($key->getContent());
         $result    = openssl_verify($payload, $expected, $publicKey, $this->getAlgorithm());
-        openssl_free_key($publicKey);
+        ois_resource($privateKey) && openssl_free_key($publicKey);
 
         return $result === 1;
     }
@@ -81,7 +81,7 @@ abstract class OpenSSL extends BaseSigner
      */
     private function validateKey($key)
     {
-        if (! is_resource($key)) {
+        if (! is_resource($key) && !($key instanceof \OpenSSLAsymmetricKey)) {
             throw InvalidKeyProvided::cannotBeParsed(openssl_error_string());
         }
 
